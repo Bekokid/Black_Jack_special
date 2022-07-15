@@ -327,7 +327,7 @@ var refreshPage = function () {
   if(shuffledDeck.length < 10){
     // shuffle Cards
     shuffledDeck = shuffleCards(makeDeck());
-    myOutputValue += `<br>Dealers wash new cards.`;
+    myOutputValue += `<br>Dealer wash new cards.`;
   }
   
   console.log(dealerHands);
