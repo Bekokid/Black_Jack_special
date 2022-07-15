@@ -227,6 +227,12 @@ var playerDraw = function () {
     document.getElementById("stand-button").className = "hidden";
     myOutputValue =
       dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+  } else {
+    myOutputValue = `Your hand total now is ${playerTotal}, BUSTED!!!`;
+    document.getElementById("submit-button").className = "hidden";
+    document.getElementById("refresh-button").className = "show";
+    document.getElementById("hit-button").className = "hidden";
+    document.getElementById("stand-button").className = "hidden";
   }
 
   if (playerTotal == dealerTotal && playerTotal < 21) {
