@@ -74,10 +74,10 @@ The <html> element is known as the root element of a HTML page. All other elemen
       <!-- The self-closing <br /> tag represents a line break - a line's worth of spacing before dispalying the next element. -->
       <br />
       <!-- The <button> tag represents.. you guessed it! a button. -->
-      <button id="submit-button">Start</button>
-      <button id="hit-button" class="hidden">Hit</button>
-      <button id="stand-button" class="hidden">Stand</button>
-      <button id="refresh-button" class="hidden">Done</button>
+      <button id="submit-button" onclick="submitButton()">Start</button>
+      <button id="hit-button" class="hidden" onclick="hitButton()">Hit</button>
+      <button id="stand-button" class="hidden" onclick="standButton()">Stand</button>
+      <button id="refresh-button" class="hidden" onclick="refreshButton()">Done</button>
       <p>Output:</p>
       <div id="output-div">
         Welcome to Sern's Cards! Click the START button to get started!
@@ -89,41 +89,7 @@ The <html> element is known as the root element of a HTML page. All other elemen
     <script src="script02.js"></script>
     <!-- Define button click functionality -->
     <script>
-      // Declare and define a variable that represents the Submit Button
-      var button = document.querySelector("#submit-button");
-      // When the submit button is clicked, access the text entered by the user in the input field
-      // And pass it as an input parameter to the main function as defined in script.js
-      button.addEventListener("click", function () {
-        // Set result to input value
-        var input = document.querySelector("#input-field");
-        // Store the output of main() in a new variable
-        var result = main(input.value);
-
-        // Display result in output element
-        var output = document.querySelector("#output-div");
-
-        output.innerHTML = result;
-
-        var standButton = document.querySelector("#stand-button");
-
-        standButton.addEventListener("click", function () {
-          // Set result to input value
-
-          // Store the output of main() in a new variable
-          var result = showResults();
-
-          // Display result in output element
-          var output = document.querySelector("#output-div");
-
-          output.innerHTML = result;
-        });
-
-        // new added button 2
-        var hitButton = document.querySelector("#hit-button");
-
-        hitButton.addEventListener("click", function () {
-          // Set result to input value
-
+	  function hitButton(){
           // Store the output of main() in a new variable
           var result = playerDraw();
 
@@ -131,13 +97,31 @@ The <html> element is known as the root element of a HTML page. All other elemen
           var output = document.querySelector("#output-div");
 
           output.innerHTML = result;
-        });
+	  };
+	  
+	  function standButton(){       
+          // Store the output of main() in a new variable
+          var result = showResults();
 
-        var refreshButton = document.querySelector("#refresh-button");
+          // Display result in output element
+          var output = document.querySelector("#output-div");
 
-        refreshButton.addEventListener("click", function () {
+          output.innerHTML = result;
+      };	  
+	  
+	  function submitButton(){
           // Set result to input value
+          var input = document.querySelector("#input-field");
+          // Store the output of main() in a new variable
+          var result = main(input.value);
 
+          // Display result in output element
+          var output = document.querySelector("#output-div");
+
+          output.innerHTML = result;
+      };
+	  
+	  function refreshButton(){
           // Store the output of main() in a new variable
           var result = refreshPage();
 
@@ -145,10 +129,7 @@ The <html> element is known as the root element of a HTML page. All other elemen
           var output = document.querySelector("#output-div");
 
           output.innerHTML = result;
-        });
-        // Reset input value
-        input.value = "";
-      });
+      };
     </script>
   </body>
 </html>
