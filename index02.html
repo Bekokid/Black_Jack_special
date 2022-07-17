@@ -68,7 +68,7 @@ The <html> element is known as the root element of a HTML page. All other elemen
     <!-- The <div> tag defines a division or a section in an HTML document, and is commonly use as a "container" for nested HTML elements. -->
     <div id="container">
       <!-- The <p> tag defines a paragraph element. -->
-      <p>Input:</p>
+      <p>Please insert your betting amount in the colum below. <br />Input:</p>
       <!-- The self-closing <input /> tag represents a field for a user to enter input. -->
       <input id="input-field" />
       <!-- The self-closing <br /> tag represents a line break - a line's worth of spacing before dispalying the next element. -->
@@ -76,8 +76,12 @@ The <html> element is known as the root element of a HTML page. All other elemen
       <!-- The <button> tag represents.. you guessed it! a button. -->
       <button id="submit-button" onclick="submitButton()">Start</button>
       <button id="hit-button" class="hidden" onclick="hitButton()">Hit</button>
-      <button id="stand-button" class="hidden" onclick="standButton()">Stand</button>
-      <button id="refresh-button" class="hidden" onclick="refreshButton()">Done</button>
+      <button id="stand-button" class="hidden" onclick="standButton()">
+        Stand
+      </button>
+      <button id="refresh-button" class="hidden" onclick="refreshButton()">
+        Done
+      </button>
       <p>Output:</p>
       <div id="output-div">
         Welcome to Sern's Cards! Click the START button to get started!
@@ -89,47 +93,47 @@ The <html> element is known as the root element of a HTML page. All other elemen
     <script src="script02.js"></script>
     <!-- Define button click functionality -->
     <script>
-	  function hitButton(){
-          // Store the output of main() in a new variable
-          var result = playerDraw();
+      function hitButton() {
+        // Store the output of main() in a new variable
+        var result = playerDraw();
 
-          // Display result in output element
-          var output = document.querySelector("#output-div");
+        // Display result in output element
+        var output = document.querySelector("#output-div");
 
-          output.innerHTML = result;
-	  };
-	  
-	  function standButton(){       
-          // Store the output of main() in a new variable
-          var result = showResults();
+        output.innerHTML = result;
+      }
 
-          // Display result in output element
-          var output = document.querySelector("#output-div");
+      function standButton() {
+        // Store the output of main() in a new variable
+        var result = showResults();
 
-          output.innerHTML = result;
-      };	  
-	  
-	  function submitButton(){
-          // Set result to input value
-          var input = document.querySelector("#input-field");
-          // Store the output of main() in a new variable
-          var result = main(input.value);
+        // Display result in output element
+        var output = document.querySelector("#output-div");
 
-          // Display result in output element
-          var output = document.querySelector("#output-div");
+        output.innerHTML = result;
+      }
 
-          output.innerHTML = result;
-      };
-	  
-	  function refreshButton(){
-          // Store the output of main() in a new variable
-          var result = refreshPage();
+      function submitButton() {
+        // Set result to input value
+        var input = document.querySelector("#input-field");
+        // Store the output of main() in a new variable
+        var result = main(input.value);
 
-          // Display result in output element
-          var output = document.querySelector("#output-div");
+        // Display result in output element
+        var output = document.querySelector("#output-div");
 
-          output.innerHTML = result;
-      };
+        output.innerHTML = result;
+      }
+
+      function refreshButton() {
+        // Store the output of main() in a new variable
+        var result = refreshPage();
+
+        // Display result in output element
+        var output = document.querySelector("#output-div");
+
+        output.innerHTML = result;
+      }
     </script>
   </body>
 </html>
