@@ -93,8 +93,8 @@ var playerOutput = "Player Hand: <br>";
 var extraOutput = "";
 var dealerAceCount = 0;
 var playerAceCount = 0;
-var dealerTokensTotal = 500;
-var playerTokensTotal = 500;
+var dealerTokensTotal = 50;
+var playerTokensTotal = 50;
 
 // Dealer draw a card and the card will be included into dealer hand
 var dealerDrawCard = function (shuffledDeck) {
@@ -341,126 +341,129 @@ var refreshPage = function () {
   return myOutputValue;
 };
 
-var main = function () {
-  //Draw 2 cards for dealer and palyer each
-  for (var i = 0; i < 2; i++) {
-    var dealerCard = dealerDrawCard(shuffledDeck);
-    var playerCard = playerDrawCard(shuffledDeck);
-  }
-
-  //Verify whether there is Black Jack; If yes, game over
-  //Else if player hand total was 15, there is a chance for player to forfeit this round
-  //Else if dealer hand total lower than 15, draw card until it's enough 16 or above
-  //Else if player hand total lower than 15, ask player to draw another card
-  //Else if both dealer and player total are lower than 15, both draw card
-  if (dealerTotal == 21 || playerTotal == 21) {
-    if (
-      dealerAceCount == 1 &&
-      dealerTotal == 21 &&
-      playerAceCount == 1 &&
-      playerTotal == 21
-    ) {
-      dealerTotal = "blackJack";
-      playerTotal = "blackJack";
-      dealerOutput = dealerOutput + `<br>Dealer had a Black Jack.`;
-      playerOutput = playerOutput + `<br>Player had a Black Jack.`;
-    } else if (dealerAceCount == 1 && dealerTotal == 21) {
-      dealerTotal = "blackJack";
-      dealerOutput = dealerOutput + `Dealer had a Black Jack.`;
-    } else if (playerAceCount == 1 && playerTotal == 21) {
-      playerTotal = "blackJack";
-      playerOutput = playerOutput + `Player had a Black Jack.`;
-    }
-    // Construct an output string to communicate which cards were drawn
-
-    var myOutputValue =
-      dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
-  } else if (playerTotal == 15) {
-    extraOutput = `<br>Your hand total is 15. <br>Would you like to draw another card or forfeit this round?`;
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "show";
-    document.getElementById("hit-button").className = "show";
-    document.getElementById("stand-button").className = "hidden";
-
-    myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
-  } else if (dealerTotal <= 15 && playerTotal > 15) {
-    for (var j = 0; dealerTotal < 16; j++) {
+var main = function (input) {
+  if (1 <= input <= playerTokensTotal) {
+    //Draw 2 cards for dealer and palyer each
+    for (var i = 0; i < 2; i++) {
       var dealerCard = dealerDrawCard(shuffledDeck);
+      var playerCard = playerDrawCard(shuffledDeck);
     }
-    extraOutput = `Your hands total now is ${playerTotal}, would you like to hit or stand? `;
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "hidden";
-    document.getElementById("hit-button").className = "show";
-    document.getElementById("stand-button").className = "show";
 
-    myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
-  } else if (dealerTotal > 15 && playerTotal < 15) {
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "hidden";
-    document.getElementById("stand-button").className = "hidden";
-    document.getElementById("hit-button").className = "show";
-    extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
+    //Verify whether there is Black Jack; If yes, game over
+    //Else if player hand total was 15, there is a chance for player to forfeit this round
+    //Else if dealer hand total lower than 15, draw card until it's enough 16 or above
+    //Else if player hand total lower than 15, ask player to draw another card
+    //Else if both dealer and player total are lower than 15, both draw card
+    if (dealerTotal == 21 || playerTotal == 21) {
+      if (
+        dealerAceCount == 1 &&
+        dealerTotal == 21 &&
+        playerAceCount == 1 &&
+        playerTotal == 21
+      ) {
+        dealerTotal = "blackJack";
+        playerTotal = "blackJack";
+        dealerOutput = dealerOutput + `<br>Dealer had a Black Jack.`;
+        playerOutput = playerOutput + `<br>Player had a Black Jack.`;
+      } else if (dealerAceCount == 1 && dealerTotal == 21) {
+        dealerTotal = "blackJack";
+        dealerOutput = dealerOutput + `Dealer had a Black Jack.`;
+      } else if (playerAceCount == 1 && playerTotal == 21) {
+        playerTotal = "blackJack";
+        playerOutput = playerOutput + `Player had a Black Jack.`;
+      }
+      // Construct an output string to communicate which cards were drawn
 
-    myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
-  } else if (dealerTotal <= 15 && playerTotal < 15) {
-    for (var j = 0; dealerTotal < 16; j++) {
-      var dealerCard = dealerDrawCard(shuffledDeck);
+      var myOutputValue =
+        dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    } else if (playerTotal == 15) {
+      extraOutput = `<br>Your hand total is 15. <br>Would you like to draw another card or forfeit this round?`;
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "show";
+      document.getElementById("hit-button").className = "show";
+      document.getElementById("stand-button").className = "hidden";
+
+      myOutputValue =
+        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    } else if (dealerTotal <= 15 && playerTotal > 15) {
+      for (var j = 0; dealerTotal < 16; j++) {
+        var dealerCard = dealerDrawCard(shuffledDeck);
+      }
+      extraOutput = `Your hands total now is ${playerTotal}, would you like to hit or stand? `;
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "hidden";
+      document.getElementById("hit-button").className = "show";
+      document.getElementById("stand-button").className = "show";
+
+      myOutputValue =
+        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    } else if (dealerTotal > 15 && playerTotal < 15) {
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "hidden";
+      document.getElementById("stand-button").className = "hidden";
+      document.getElementById("hit-button").className = "show";
+      extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
+
+      myOutputValue =
+        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    } else if (dealerTotal <= 15 && playerTotal < 15) {
+      for (var j = 0; dealerTotal < 16; j++) {
+        var dealerCard = dealerDrawCard(shuffledDeck);
+      }
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "hidden";
+      document.getElementById("stand-button").className = "hidden";
+      document.getElementById("hit-button").className = "show";
+      extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
+
+      myOutputValue =
+        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    } else if (dealerTotal > 15 && playerTotal > 15) {
+      extraOutput = `Your hand total now is ${playerTotal}, would you like to hit or stand? `;
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "hidden";
+      document.getElementById("hit-button").className = "show";
+      document.getElementById("stand-button").className = "show";
+
+      myOutputValue =
+        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
     }
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "hidden";
-    document.getElementById("stand-button").className = "hidden";
-    document.getElementById("hit-button").className = "show";
-    extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
 
-    myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
-  } else if (dealerTotal > 15 && playerTotal > 15) {
-    extraOutput = `Your hand total now is ${playerTotal}, would you like to hit or stand? `;
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "hidden";
-    document.getElementById("hit-button").className = "show";
-    document.getElementById("stand-button").className = "show";
+    console.log(dealerCard);
+    console.log(dealerTotal);
+    console.log(dealerHands);
+    console.log(dealerOutput);
 
-    myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+    console.log(playerCard);
+    console.log(playerTotal);
+    console.log(playerHands);
+    console.log(playerOutput);
+
+    // Compare computer and player cards by rank attribute
+    // If computer card rank is greater than player card rank, computer wins
+
+    if (playerTotal == "blackJack" && dealerTotal == "blackJack") {
+      myOutputValue = myOutputValue + "<br>It's a tie.";
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "show";
+      document.getElementById("hit-button").className = "hidden";
+      document.getElementById("stand-button").className = "hidden";
+    } else if (playerTotal == "blackJack") {
+      myOutputValue = myOutputValue + `<br>Player wins by Black Jack.`;
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "show";
+      document.getElementById("hit-button").className = "hidden";
+      document.getElementById("stand-button").className = "hidden";
+    } else if (dealerTotal == "blackJack") {
+      myOutputValue = myOutputValue + `<br>Dealer wins by Black Jack.`;
+      document.getElementById("submit-button").className = "hidden";
+      document.getElementById("refresh-button").className = "show";
+      document.getElementById("hit-button").className = "hidden";
+      document.getElementById("stand-button").className = "hidden";
+    }
+  } else {
+    myOutputValue = `Your betting amount should between 1 to ${playerTokensTotal}.<br>Please insert your betting amount again.`;
   }
-
-  console.log(dealerCard);
-  console.log(dealerTotal);
-  console.log(dealerHands);
-  console.log(dealerOutput);
-
-  console.log(playerCard);
-  console.log(playerTotal);
-  console.log(playerHands);
-  console.log(playerOutput);
-
-  // Compare computer and player cards by rank attribute
-  // If computer card rank is greater than player card rank, computer wins
-
-  if (playerTotal == "blackJack" && dealerTotal == "blackJack") {
-    myOutputValue = myOutputValue + "<br>It's a tie.";
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "show";
-    document.getElementById("hit-button").className = "hidden";
-    document.getElementById("stand-button").className = "hidden";
-  } else if (playerTotal == "blackJack") {
-    myOutputValue = myOutputValue + `<br>Player wins by Black Jack.`;
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "show";
-    document.getElementById("hit-button").className = "hidden";
-    document.getElementById("stand-button").className = "hidden";
-  } else if (dealerTotal == "blackJack") {
-    myOutputValue = myOutputValue + `<br>Dealer wins by Black Jack.`;
-    document.getElementById("submit-button").className = "hidden";
-    document.getElementById("refresh-button").className = "show";
-    document.getElementById("hit-button").className = "hidden";
-    document.getElementById("stand-button").className = "hidden";
-  }
-
   console.log(shuffledDeck.length);
   // Return the fully-constructed output string
   return myOutputValue;
