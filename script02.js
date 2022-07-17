@@ -342,7 +342,7 @@ var refreshPage = function () {
 };
 
 var main = function (input) {
-  if (1 <= input <= playerTokensTotal) {
+  if (0 < input && input <= playerTokensTotal) {
     //Draw 2 cards for dealer and palyer each
     for (var i = 0; i < 2; i++) {
       var dealerCard = dealerDrawCard(shuffledDeck);
