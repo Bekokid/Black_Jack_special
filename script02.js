@@ -323,13 +323,13 @@ var refreshPage = function () {
   document.getElementById("stand-button").className = "hidden";
 
   var myOutputValue = `Welcome to Sern's Cards! Click the START button to get started!`;
-  
-  if(shuffledDeck.length < 10){
+
+  if (shuffledDeck.length < 10) {
     // shuffle Cards
     shuffledDeck = shuffleCards(makeDeck());
     myOutputValue += `<br>Dealer wash new cards.`;
   }
-  
+
   console.log(dealerHands);
   console.log(playerHands);
   console.log(playerTotal);
