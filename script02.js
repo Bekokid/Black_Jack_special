@@ -96,7 +96,7 @@ var playerAceCount = 0;
 var dealerTokensTotal = 100;
 var playerTokensTotal = 100;
 var betting = 0;
-var scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
+var scoringBoard = "";
 
 // Dealer draw a card and the card will be included into dealer hand
 var dealerDrawCard = function (shuffledDeck) {
@@ -238,6 +238,8 @@ var playerDraw = function () {
     playerTokensTotal = playerTokensTotal - betting;
     dealerTokensTotal = dealerTokensTotal - -1 * betting;
 
+    scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
+
     myOutputValue =
       dealerOutput +
       "<br><br>" +
@@ -252,6 +254,7 @@ var playerDraw = function () {
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
     myOutputValue =
       dealerOutput +
       "<br><br>" +
@@ -377,7 +380,13 @@ var refreshPage = function () {
   document.getElementById("hit-button").className = "hidden";
   document.getElementById("stand-button").className = "hidden";
 
-  var myOutputValue = `Welcome to Sern's Cards! Click the START button to get started!`;
+  if (playerTokensTotal == 0) {
+    var myOutputValue = `Since player has no coin left, player lost.`;
+  } else if (dealerTokensTotal == 0) {
+    var myOutputValue = `Since dealer has no coin left, player won.`;
+  } else {
+    var myOutputValue = `Welcome to Sern's Cards! Click the START button to get started!`;
+  }
 
   if (shuffledDeck.length < 10) {
     // shuffle Cards
@@ -393,10 +402,14 @@ var refreshPage = function () {
   console.log(playerOutput);
   console.log(dealerAceCount);
   console.log(playerAceCount);
+  console.log(dealerTokensTotal);
+  console.log(playerTokensTotal);
   return myOutputValue;
 };
 
 var main = function (input) {
+  scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
+
   if (9 < input && input <= playerTokensTotal) {
     betting = input;
 
@@ -542,6 +555,8 @@ var main = function (input) {
       playerTokensTotal = playerTokensTotal + input * 2;
       dealerTokensTotal = dealerTokensTotal - input * 2;
 
+      scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
+
       var myOutputValue = myOutputValue + "<br><br>" + scoringBoard;
     } else if (dealerTotal == "blackJack") {
       myOutputValue = myOutputValue + `<br>Dealer wins by Black Jack.`;
@@ -552,6 +567,8 @@ var main = function (input) {
 
       playerTokensTotal = playerTokensTotal - input * 2;
       dealerTokensTotal = dealerTokensTotal + input * 2;
+
+      scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
 
       var myOutputValue = myOutputValue + "<br><br>" + scoringBoard;
     }
