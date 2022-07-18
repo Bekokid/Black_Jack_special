@@ -271,6 +271,7 @@ var playerDraw = function () {
     document.getElementById("stand-button").className = "hidden";
   }
 
+  /*
   if (playerTotal == dealerTotal && playerTotal < 21) {
     extraOutput = extraOutput + `<br><br>It's a tie.`;
     myOutputValue =
@@ -282,6 +283,7 @@ var playerDraw = function () {
       "<br><br>" +
       scoringBoard;
   }
+  */
 
   console.log(dealerOutput);
   console.log(playerOutput);
@@ -380,9 +382,9 @@ var refreshPage = function () {
   document.getElementById("hit-button").className = "hidden";
   document.getElementById("stand-button").className = "hidden";
 
-  if (playerTokensTotal == 0) {
+  if (playerTokensTotal <= 0) {
     var myOutputValue = `Since player has no coin left, player lost.`;
-  } else if (dealerTokensTotal == 0) {
+  } else if (dealerTokensTotal <= 0) {
     var myOutputValue = `Since dealer has no coin left, player won.`;
   } else {
     var myOutputValue = `Welcome to Sern's Cards! Click the START button to get started!`;
