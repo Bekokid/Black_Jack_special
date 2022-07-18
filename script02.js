@@ -93,8 +93,10 @@ var playerOutput = "Player Hand: <br>";
 var extraOutput = "";
 var dealerAceCount = 0;
 var playerAceCount = 0;
-var dealerTokensTotal = 50;
-var playerTokensTotal = 50;
+var dealerTokensTotal = 100;
+var playerTokensTotal = 100;
+var betting = 0;
+var scoringBoard = `Dealer now has ${dealerTokensTotal} coins.<br>Player now has ${playerTokensTotal} coins.<br><br>`;
 
 // Dealer draw a card and the card will be included into dealer hand
 var dealerDrawCard = function (shuffledDeck) {
@@ -192,7 +194,12 @@ var playerDraw = function () {
     document.getElementById("stand-button").className = "hidden";
 
     var myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      scoringBoard +
+      dealerFirstHand +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput;
   } else if (playerTotal > 15 && playerTotal <= 21) {
     extraOutput = `Your hand total now is ${playerTotal}, would you like to hit or stand? `;
     document.getElementById("submit-button").className = "hidden";
@@ -200,7 +207,12 @@ var playerDraw = function () {
     document.getElementById("hit-button").className = "show";
     document.getElementById("stand-button").className = "show";
     myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      scoringBoard +
+      dealerFirstHand +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput;
   } else if (playerTotal < 31 && playerTotal > 21 && playerAceCount >= 1) {
     playerTotal = playerTotal - 10;
     extraOutput = `Your hand total now is ${playerTotal}, would you like to hit or stand? `;
@@ -210,15 +222,30 @@ var playerDraw = function () {
     document.getElementById("hit-button").className = "show";
     document.getElementById("stand-button").className = "show";
     myOutputValue =
-      dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      scoringBoard +
+      dealerFirstHand +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput;
   } else if (playerTotal > 21 && playerAceCount < 1 && dealerTotal <= 21) {
     extraOutput = "Player busted.<br>Dealer wins.";
     document.getElementById("submit-button").className = "hidden";
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
+    playerTokensTotal = playerTokensTotal - betting;
+    dealerTokensTotal = dealerTokensTotal - -1 * betting;
+
     myOutputValue =
-      dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      dealerOutput +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput +
+      "<br><br>" +
+      scoringBoard;
   } else if (playerTotal > 21 && playerAceCount < 1 && dealerTotal > 21) {
     extraOutput = "Both Dealer and Player busted.";
     document.getElementById("submit-button").className = "hidden";
@@ -226,7 +253,13 @@ var playerDraw = function () {
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
     myOutputValue =
-      dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      dealerOutput +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput +
+      "<br><br>" +
+      scoringBoard;
   } else {
     myOutputValue = `Your hand total now is ${playerTotal}, BUSTED!!!`;
     document.getElementById("submit-button").className = "hidden";
@@ -238,7 +271,13 @@ var playerDraw = function () {
   if (playerTotal == dealerTotal && playerTotal < 21) {
     extraOutput = extraOutput + `<br><br>It's a tie.`;
     myOutputValue =
-      dealerOutput + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+      dealerOutput +
+      "<br><br>" +
+      playerOutput +
+      "<br><br>" +
+      extraOutput +
+      "<br><br>" +
+      scoringBoard;
   }
 
   console.log(dealerOutput);
@@ -246,6 +285,7 @@ var playerDraw = function () {
   console.log(playerTotal);
   console.log(playerExtraDraw);
   console.log(shuffledDeck.length);
+
   return myOutputValue;
 };
 
@@ -271,12 +311,18 @@ var showResults = function () {
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
+    playerTokensTotal = playerTokensTotal - -1 * betting;
+    dealerTokensTotal = dealerTokensTotal - betting;
   } else if (dealerTotal <= 21 && playerTotal > 21) {
     myOutputValue = myOutputValue + "<br>Player busted.Dealer wins.";
     document.getElementById("submit-button").className = "hidden";
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
+    playerTokensTotal = playerTokensTotal - betting;
+    dealerTokensTotal = dealerTokensTotal - -1 * betting;
   } else if (dealerTotal > playerTotal) {
     // Add conditional-dependent text to the output string
     myOutputValue = myOutputValue + "<br>Dealer wins.";
@@ -284,6 +330,9 @@ var showResults = function () {
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
+    playerTokensTotal = playerTokensTotal - betting;
+    dealerTokensTotal = dealerTokensTotal - -1 * betting;
     // Else if computer card rank is less than player card rank, player wins
   } else if (dealerTotal < playerTotal) {
     myOutputValue = myOutputValue + "<br>Player wins!";
@@ -291,6 +340,9 @@ var showResults = function () {
     document.getElementById("refresh-button").className = "show";
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
+
+    playerTokensTotal = playerTokensTotal - -1 * betting;
+    dealerTokensTotal = dealerTokensTotal - betting;
     // Otherwise (i.e. ranks are equal), it's a tie
   } else {
     myOutputValue = myOutputValue + "<br>It's a tie.";
@@ -299,7 +351,9 @@ var showResults = function () {
     document.getElementById("hit-button").className = "hidden";
     document.getElementById("stand-button").className = "hidden";
   }
-
+  myOutputValue =
+    myOutputValue +
+    `<br><br>Dealer now have ${dealerTokensTotal} coins.<br>Player now have ${playerTokensTotal} coins.`;
   // Return the fully-constructed output string
   return myOutputValue;
 };
@@ -316,6 +370,7 @@ var refreshPage = function () {
   extraOutput = "";
   dealerAceCount = 0;
   playerAceCount = 0;
+
   //window.location.reload();
   document.getElementById("submit-button").className = "show";
   document.getElementById("refresh-button").className = "hidden";
@@ -327,7 +382,7 @@ var refreshPage = function () {
   if (shuffledDeck.length < 10) {
     // shuffle Cards
     shuffledDeck = shuffleCards(makeDeck());
-    myOutputValue += `<br>Dealer wash new cards.`;
+    myOutputValue += `<br>Dealer shuffle cards again.`;
   }
 
   console.log(dealerHands);
@@ -342,7 +397,9 @@ var refreshPage = function () {
 };
 
 var main = function (input) {
-  if (0 < input && input <= playerTokensTotal) {
+  if (9 < input && input <= playerTokensTotal) {
+    betting = input;
+
     //Draw 2 cards for dealer and palyer each
     for (var i = 0; i < 2; i++) {
       var dealerCard = dealerDrawCard(shuffledDeck);
@@ -384,7 +441,12 @@ var main = function (input) {
       document.getElementById("stand-button").className = "hidden";
 
       myOutputValue =
-        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+        scoringBoard +
+        dealerFirstHand +
+        "<br><br>" +
+        playerOutput +
+        "<br><br>" +
+        extraOutput;
     } else if (dealerTotal <= 15 && playerTotal > 15) {
       for (var j = 0; dealerTotal < 16; j++) {
         var dealerCard = dealerDrawCard(shuffledDeck);
@@ -396,7 +458,12 @@ var main = function (input) {
       document.getElementById("stand-button").className = "show";
 
       myOutputValue =
-        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+        scoringBoard +
+        dealerFirstHand +
+        "<br><br>" +
+        playerOutput +
+        "<br><br>" +
+        extraOutput;
     } else if (dealerTotal > 15 && playerTotal < 15) {
       document.getElementById("submit-button").className = "hidden";
       document.getElementById("refresh-button").className = "hidden";
@@ -405,7 +472,12 @@ var main = function (input) {
       extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
 
       myOutputValue =
-        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+        scoringBoard +
+        dealerFirstHand +
+        "<br><br>" +
+        playerOutput +
+        "<br><br>" +
+        extraOutput;
     } else if (dealerTotal <= 15 && playerTotal < 15) {
       for (var j = 0; dealerTotal < 16; j++) {
         var dealerCard = dealerDrawCard(shuffledDeck);
@@ -417,7 +489,12 @@ var main = function (input) {
       extraOutput = `<br>Your hand total is lower than 15. <br>You must draw another card.`;
 
       myOutputValue =
-        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+        scoringBoard +
+        dealerFirstHand +
+        "<br><br>" +
+        playerOutput +
+        "<br><br>" +
+        extraOutput;
     } else if (dealerTotal > 15 && playerTotal > 15) {
       extraOutput = `Your hand total now is ${playerTotal}, would you like to hit or stand? `;
       document.getElementById("submit-button").className = "hidden";
@@ -426,7 +503,12 @@ var main = function (input) {
       document.getElementById("stand-button").className = "show";
 
       myOutputValue =
-        dealerFirstHand + "<br><br>" + playerOutput + "<br><br>" + extraOutput;
+        scoringBoard +
+        dealerFirstHand +
+        "<br><br>" +
+        playerOutput +
+        "<br><br>" +
+        extraOutput;
     }
 
     console.log(dealerCard);
@@ -448,21 +530,33 @@ var main = function (input) {
       document.getElementById("refresh-button").className = "show";
       document.getElementById("hit-button").className = "hidden";
       document.getElementById("stand-button").className = "hidden";
+
+      var myOutputValue = myOutputValue + "<br><br>" + scoringBoard;
     } else if (playerTotal == "blackJack") {
       myOutputValue = myOutputValue + `<br>Player wins by Black Jack.`;
       document.getElementById("submit-button").className = "hidden";
       document.getElementById("refresh-button").className = "show";
       document.getElementById("hit-button").className = "hidden";
       document.getElementById("stand-button").className = "hidden";
+
+      playerTokensTotal = playerTokensTotal + input * 2;
+      dealerTokensTotal = dealerTokensTotal - input * 2;
+
+      var myOutputValue = myOutputValue + "<br><br>" + scoringBoard;
     } else if (dealerTotal == "blackJack") {
       myOutputValue = myOutputValue + `<br>Dealer wins by Black Jack.`;
       document.getElementById("submit-button").className = "hidden";
       document.getElementById("refresh-button").className = "show";
       document.getElementById("hit-button").className = "hidden";
       document.getElementById("stand-button").className = "hidden";
+
+      playerTokensTotal = playerTokensTotal - input * 2;
+      dealerTokensTotal = dealerTokensTotal + input * 2;
+
+      var myOutputValue = myOutputValue + "<br><br>" + scoringBoard;
     }
   } else {
-    myOutputValue = `Your betting amount should between 1 to ${playerTokensTotal}.<br>Please insert your betting amount again.`;
+    myOutputValue = `Your betting amount should between 10 to ${playerTokensTotal}.<br>Please insert your betting amount again.`;
   }
   console.log(shuffledDeck.length);
   // Return the fully-constructed output string
